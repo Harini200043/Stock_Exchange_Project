@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Exchange</title>
+    <style>
+        body{
+            background-image:url(./Images/stock.jpg) ;
+            background-size: cover;
+        }
+        table,tr,th,td{
+            border: 3px solid white;
+            border-collapse: collapse;
+            padding: 10px;
+            background-color: black;
+            color: white;
+            border-radius: 25px;
+            text-align: center;
+        }
+        caption{
+            color: white;
+            font-size: 34px;
+            text-align: center;
+            padding: 10px 0px 30px 0px;
+        }
+        th{
+            font-size: 20px;
+        }
+        td{
+            color: aqua;
+            text-align: center;
+        }
+
+    .sear{
+        text-align: center;
+        padding: 20px;
+    }
+    input {
+        border: 2px solid hsla(0, 0%, 20%, 0.3);
+        border-radius: 10px;
+        font-size: 1.5rem;
+        margin: 10px;
+        padding: 10px;
+        font-weight: bold;
+        text-align: center;
+        color: palevioletred;
+        width: 300px;
+      }
+      input[type="submit"] {
+        border: none;
+        width: 200px;
+        margin: 10px;
+        padding: 10px 20px;
+        font-weight: bold;
+        text-align: center;
+        font-size: 1.5rem;
+        background-color: gray;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      input[type="submit"]:hover {
+        background-color: green;
+      }
+
+    .tab{
+        text-align: center;
+        /* display: none; */
+
+    }
+    .tab table{
+        margin: 0 auto;
+    }
+    #chan{
+        color: greenyellow;
+    }
+    </style>
+</head>
+<body>
+
+    <form class="sear">
+        <input type="search">
+        <input type="submit" value="Search">
+    </form>
+        
+        <div class="tab">
+            
+            <!-- <table>
+                <caption>STOCK DETAILS:</caption>
+                <tr>
+                    <th><h2>Symbol</h2></th>
+                    <th><h2>Name</h2></th>
+                    <th><h2>Price</h2></th>
+                    <th><h2>Change</h2></th>
+                    <th><h2>Change %</h2></th>
+                    <th><h2>Country Code</h2></th>
+                    <th><h2>Exchange</h2></th>
+                    <th><h2>Exchange Open</h2></th>
+                    <th><h2>Exchange Close</h2></th>
+                    
+                </tr>
+            </table> -->
+            
+        </div>
+
+
+    <script>
+      document.forms[0].addEventListener("submit", (e) => {
+      e.preventDefault();
+     var tableContainer=document.getElementsByClassName("tab")
+     tableContainer[0].innerHTML=""
+      var stock = e.target[0].value
+      const url = `https://real-time-finance-data.p.rapidapi.com/search?query=${stock}&language=en`;
+      const options = {
+      method: 'GET',
+      headers: {
+      'X-RapidAPI-Key': '9b537c8f9dmsh76436b692535c35p101dcdjsn3e7618ca9b0a',
+      'X-RapidAPI-Host': 'real-time-finance-data.p.rapidapi.com'
+      }
+      };
+      
+      fetch(url,options)
+      .then((val)=>{
+      return val.json()
+      }).then((val)=>{
+      console.log(val)
+
+      var table=document.createElement("table")
+      tableContainer[0].appendChild(table)
+
+      var caption=document.createElement("caption")
+      caption.innerText="STOCK DETAILS:"
+      table.appendChild(caption)
+
+      var tr=document.createElement("tr")
+      table.appendChild(tr)
+
+      var th=document.createElement("th")
+      th.innerText="Symbol"
+      table.appendChild(th)
+
+      
+      var th=document.createElement("th")
+      th.innerText="Name"
+      table.appendChild(th)
+
+      
+      var th=document.createElement("th")
+      th.innerText="Price"
+      table.appendChild(th)
+
+      
+      var th=document.createElement("th")
+      th.innerText="Change"
+      table.appendChild(th)
+
+      
+      var th=document.createElement("th")
+      th.innerText="Change %"
+      table.appendChild(th)
+
+      
+      var th=document.createElement("th")
+      th.innerText="Countrty Code"
+      table.appendChild(th)
+
+      
+      var th=document.createElement("th")
+      th.innerText="Exchange"
+      table.appendChild(th)
+
+      
+      var th=document.createElement("th")
+      th.innerText="Exchange Open"
+      table.appendChild(th)
+
+      
+      var th=document.createElement("th")
+      th.innerText="Exchange Close"
+      table.appendChild(th)
+
+    
+      for(let i=0;i<val["data"]["stock"].length;i++){
+      
+      var tr1= document.createElement("tr");
+      table.appendChild(tr1);
+      
+      var td1 =   document.createElement('td');
+      tr1.appendChild(td1);
+      td1.innerText = val["data"]["stock"][i]["symbol"];
+      
+      var td1 =   document.createElement('td');
+      tr1.appendChild(td1);
+      td1.innerText = val["data"]["stock"][i]["name"];
+      
+      var td1 =   document.createElement('td');
+      tr1.appendChild(td1);
+      td1.innerText = val["data"]["stock"][i]["price"];
+      
+      var td1 =   document.createElement('td');
+      tr1.appendChild(td1);
+      td1.innerText = val["data"]["stock"][i]["change"];
+      if (parseFloat(val["data"]["stock"][i]["change"]) < 0) {
+                        td1.style.color = "red";
+                    }
+      td1.setAttribute("id","chan")
+      
+      var td1 =   document.createElement('td');
+      tr1.appendChild(td1);
+      td1.innerText = val["data"]["stock"][i]["change_percent"];
+      if (parseFloat(val["data"]["stock"][i]["change_percent"]) < 0) {
+                        td1.style.color = "red";
+                    }
+      td1.setAttribute("id","chan")
+      
+      var td1 =   document.createElement('td');
+      tr1.appendChild(td1);
+      td1.innerText = val["data"]["stock"][i]["country_code"];
+      
+      var td1 =   document.createElement('td');
+      tr1.appendChild(td1);
+      td1.innerText = val["data"]["stock"][i]["exchange"];
+      
+      var td1 =   document.createElement('td');
+      tr1.appendChild(td1);
+      td1.innerText = val["data"]["stock"][i]["exchange_open"];
+      
+      var td1 =   document.createElement('td');
+      tr1.appendChild(td1);
+      td1.innerText = val["data"]["stock"][i]["exchange_close"];
+      }
+      
+      console.log(tab.innerHTML);
+      })
+      })
+</script>
+</body>
+</html>
